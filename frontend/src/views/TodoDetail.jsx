@@ -3,16 +3,13 @@ import React from 'react'
 import NotFound from './NotFound';
 import './TodoDetail.scss'
 import { connect } from 'react-redux';
+import { updateTodo } from '../store/actions';
 
 class TodoDetail extends React.Component {
-
-
-
     constructor(props) {
         super(props)
         this.state = { ...this.props.todo }
     }
-
 
     componentDidUpdate(prevProps) {
         console.log(prevProps);
@@ -21,13 +18,13 @@ class TodoDetail extends React.Component {
         }
     }
 
-
     handleChange = ({ target }) => {
         const value = target.name === 'completed' ? target.checked : target.value
         this.setState({ [target.name]: value })
     }
+
     submit = () => {
-        this.props.onEditTodo(this.state);
+        this.props.onSubmited(this.state);
         this.props.navigate('/');
     }
 
@@ -59,17 +56,12 @@ class TodoDetail extends React.Component {
             </div>
         )
     }
-
-
 }
-
-
 
 export default connect(
     (state, props) => {
         return ({ todo: state.todos.find(todo => todo.id === props.id) })
-
     },
-    null
-)
-    (TodoDetail);
+    dispatch => ({ onSubmited: updateTodo(dispatch)})
+)(TodoDetail);
+

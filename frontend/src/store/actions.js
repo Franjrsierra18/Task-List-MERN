@@ -24,8 +24,6 @@ export const addTodo = dispatch => async (text) => {
   });
 };
 
-
-
 export const completeTodo = dispatch => async (todo) => {
   todo.completed = !todo.completed;
   const { data } = await Axios.put(API_URL + '/todos', todo);
@@ -33,5 +31,22 @@ export const completeTodo = dispatch => async (todo) => {
   dispatch({
     type: 'LOAD_TODOS',
     payload: data.todos,
+  });
+};
+
+export const updateTodo = dispatch => async (todo) => {
+  const { data } = await Axios.put(API_URL + '/todos', todo);
+  dispatch({
+    type: 'LOAD_TODOS',
+    payload: data.todos,
+  });
+};
+
+export const deleteTodo = dispatch => async (id) => {
+  const { data } = await Axios.delete(API_URL + '/todos/' + id);
+
+  dispatch({
+    type: 'DEL_TODOS',
+    payload: data.todos
   });
 };
